@@ -1,0 +1,13 @@
+README.md
+pyproject.toml
+setup.py
+memoravel/__init__.py
+memoravel/core.py
+memoravel/utils.py
+memoravel.egg-info/PKG-INFO
+memoravel.egg-info/SOURCES.txt
+memoravel.egg-info/dependency_links.txt
+memoravel.egg-info/requires.txt
+memoravel.egg-info/top_level.txt
+tests/__init__.py
+tests/test_memoravel.py
