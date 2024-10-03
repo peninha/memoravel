@@ -8,12 +8,12 @@ class TestMemoravel(unittest.TestCase):
     def test_preserve_initial_messages(self):
         # Testa preservação de 2 mensagens iniciais
         memoravel = Memoravel(limit=5, max_tokens=100, preserve_initial_messages=2)
-        memoravel.add_message("user", "Mensagem 1")
-        memoravel.add_message("user", "Mensagem 2")
-        memoravel.add_message("user", "Mensagem 3")
-        memoravel.add_message("user", "Mensagem 4")
-        memoravel.add_message("user", "Mensagem 5")
-        memoravel.add_message("user", "Mensagem 6")  # Deve remover mensagens após as iniciais
+        memoravel.add_memory("user", "Mensagem 1")
+        memoravel.add_memory("user", "Mensagem 2")
+        memoravel.add_memory("user", "Mensagem 3")
+        memoravel.add_memory("user", "Mensagem 4")
+        memoravel.add_memory("user", "Mensagem 5")
+        memoravel.add_memory("user", "Mensagem 6")  # Deve remover mensagens após as iniciais
 
         history = memoravel.get_history()
         #print(history)
@@ -25,15 +25,15 @@ class TestMemoravel(unittest.TestCase):
     def test_preserve_system_messages(self):
         # Testa preservação de mensagens do sistema
         memoravel = Memoravel(limit=5, max_tokens=100, preserve_system_messages=True)
-        memoravel.add_message("system", "Mensagem de sistema 1")
-        memoravel.add_message("user", "Mensagem 2")
-        memoravel.add_message("user", "Mensagem 3")
-        memoravel.add_message("user", "Mensagem 4")
-        memoravel.add_message("system", "Mensagem de sistema 5")
-        memoravel.add_message("user", "Mensagem 6")  # Deve remover mensagens de usuário, não de sistema
-        memoravel.add_message("user", "Mensagem 7")  # Deve remover mensagens de usuário, não de sistema
-        memoravel.add_message("user", "Mensagem 8")  # Deve remover mensagens de usuário, não de sistema
-        memoravel.add_message("user", "Mensagem 9")  # Deve remover mensagens de usuário, não de sistema
+        memoravel.add_memory("system", "Mensagem de sistema 1")
+        memoravel.add_memory("user", "Mensagem 2")
+        memoravel.add_memory("user", "Mensagem 3")
+        memoravel.add_memory("user", "Mensagem 4")
+        memoravel.add_memory("system", "Mensagem de sistema 5")
+        memoravel.add_memory("user", "Mensagem 6")  # Deve remover mensagens de usuário, não de sistema
+        memoravel.add_memory("user", "Mensagem 7")  # Deve remover mensagens de usuário, não de sistema
+        memoravel.add_memory("user", "Mensagem 8")  # Deve remover mensagens de usuário, não de sistema
+        memoravel.add_memory("user", "Mensagem 9")  # Deve remover mensagens de usuário, não de sistema
 
         history = memoravel.get_history()
         #print(history)
@@ -49,15 +49,15 @@ class TestMemoravel(unittest.TestCase):
     def test_preserve_separated_system_messages(self):
         # Testa preservação de mensagens do sistema
         memoravel = Memoravel(limit=5, max_tokens=100, preserve_system_messages=True)
-        memoravel.add_message("system", "Mensagem de sistema 1")
-        memoravel.add_message("user", "Mensagem 2")
-        memoravel.add_message("user", "Mensagem 3")
-        memoravel.add_message("user", "Mensagem 4")
-        memoravel.add_message("system", "Mensagem de sistema 5")
-        memoravel.add_message("user", "Mensagem 6")  # Deve remover mensagens de usuário, não de sistema
-        memoravel.add_message("user", "Mensagem 7")  # Deve remover mensagens de usuário, não de sistema
-        memoravel.add_message("system", "Mensagem de sistema 8")  # Deve remover mensagens de usuário, não de sistema
-        memoravel.add_message("user", "Mensagem 9")  # Deve remover mensagens de usuário, não de sistema
+        memoravel.add_memory("system", "Mensagem de sistema 1")
+        memoravel.add_memory("user", "Mensagem 2")
+        memoravel.add_memory("user", "Mensagem 3")
+        memoravel.add_memory("user", "Mensagem 4")
+        memoravel.add_memory("system", "Mensagem de sistema 5")
+        memoravel.add_memory("user", "Mensagem 6")  # Deve remover mensagens de usuário, não de sistema
+        memoravel.add_memory("user", "Mensagem 7")  # Deve remover mensagens de usuário, não de sistema
+        memoravel.add_memory("system", "Mensagem de sistema 8")  # Deve remover mensagens de usuário, não de sistema
+        memoravel.add_memory("user", "Mensagem 9")  # Deve remover mensagens de usuário, não de sistema
 
         history = memoravel.get_history()
         # A mensagem do sistema deve ser preservada
@@ -82,12 +82,12 @@ class TestMemoravel(unittest.TestCase):
     def test_trim_based_on_max_tokens(self):
         # Testa trim baseado no número de tokens
         memoravel = Memoravel(limit=10, max_tokens=50)  # Define um limite de tokens relativamente baixo para teste
-        memoravel.add_message("user", "Mensagem curta")
-        memoravel.add_message("user", "Mensagem um pouco mais longa")
-        memoravel.add_message("user", "Uma mensagem consideravelmente mais longa que deveria contar mais tokens")
+        memoravel.add_memory("user", "Mensagem curta")
+        memoravel.add_memory("user", "Mensagem um pouco mais longa")
+        memoravel.add_memory("user", "Uma mensagem consideravelmente mais longa que deveria contar mais tokens")
 
         # Adiciona mais uma mensagem para garantir que ultrapasse o limite de tokens
-        memoravel.add_message("user", "Uma mensagem muito, muito longa que definitivamente vai ultrapassar o limite de tokens e causar uma remoção de mensagens anteriores para se ajustar ao max_tokens")
+        memoravel.add_memory("user", "Uma mensagem muito, muito longa que definitivamente vai ultrapassar o limite de tokens e causar uma remoção de mensagens anteriores para se ajustar ao max_tokens")
 
         history = memoravel.get_history()
         print(history)
@@ -103,10 +103,10 @@ class TestMemoravel(unittest.TestCase):
     def test_trim_based_on_limit(self):
         # Testa que o histórico é reduzido ao limite de mensagens permitido
         memoravel = Memoravel(limit=3, max_tokens=100)
-        memoravel.add_message("user", "Mensagem 1")
-        memoravel.add_message("user", "Mensagem 2")
-        memoravel.add_message("user", "Mensagem 3")
-        memoravel.add_message("user", "Mensagem 4")
+        memoravel.add_memory("user", "Mensagem 1")
+        memoravel.add_memory("user", "Mensagem 2")
+        memoravel.add_memory("user", "Mensagem 3")
+        memoravel.add_memory("user", "Mensagem 4")
 
         history = memoravel.get_history()
         # Verifica se o histórico foi cortado corretamente
@@ -118,7 +118,7 @@ class TestMemoravel(unittest.TestCase):
         # Testa comportamento com limit=0 (sem limite de quantidade de mensagens)
         memoravel = Memoravel(limit=0, max_tokens=100)
         for i in range(10):
-            memoravel.add_message("user", f"Mensagem {i+1}")
+            memoravel.add_memory("user", f"Mensagem {i+1}")
 
         history = memoravel.get_history()
         # Deve conter todas as 10 mensagens adicionadas, pois não há limite de quantidade
@@ -129,10 +129,10 @@ class TestMemoravel(unittest.TestCase):
     def test_no_token_limit_when_max_tokens_zero(self):
         # Testa comportamento com max_tokens=0 (sem limite de tokens)
         memoravel = Memoravel(limit=5, max_tokens=0)
-        memoravel.add_message("user", "Mensagem curta")
-        memoravel.add_message("user", "Outra mensagem")
-        memoravel.add_message("user", "Mais uma mensagem")
-        memoravel.add_message("user", "Mensagem bastante longa que deveria, normalmente, contar muitos tokens")
+        memoravel.add_memory("user", "Mensagem curta")
+        memoravel.add_memory("user", "Outra mensagem")
+        memoravel.add_memory("user", "Mais uma mensagem")
+        memoravel.add_memory("user", "Mensagem bastante longa que deveria, normalmente, contar muitos tokens")
 
         history = memoravel.get_history()
         # Deve conter todas as 4 mensagens adicionadas, mesmo que o total de tokens seja alto
@@ -142,7 +142,7 @@ class TestMemoravel(unittest.TestCase):
         # Testa comportamento com limit=0 e max_tokens=0 (sem limites aplicados)
         memoravel = Memoravel(limit=0, max_tokens=0)
         for i in range(50):
-            memoravel.add_message("user", f"Mensagem {i+1}")
+            memoravel.add_memory("user", f"Mensagem {i+1}")
 
         history = memoravel.get_history()
         # Deve conter todas as 50 mensagens adicionadas, sem remoções
@@ -151,10 +151,10 @@ class TestMemoravel(unittest.TestCase):
     def test_trim_based_on_limit_only_when_tokens_zero(self):
         # Testa que apenas o limite de quantidade é aplicado quando max_tokens=0
         memoravel = Memoravel(limit=3, max_tokens=0)
-        memoravel.add_message("user", "Mensagem 1")
-        memoravel.add_message("user", "Mensagem 2")
-        memoravel.add_message("user", "Mensagem 3")
-        memoravel.add_message("user", "Mensagem 4")  # Deve remover a primeira mensagem
+        memoravel.add_memory("user", "Mensagem 1")
+        memoravel.add_memory("user", "Mensagem 2")
+        memoravel.add_memory("user", "Mensagem 3")
+        memoravel.add_memory("user", "Mensagem 4")  # Deve remover a primeira mensagem
 
         history = memoravel.get_history()
         # Verifica se o histórico foi cortado corretamente para 3 mensagens
