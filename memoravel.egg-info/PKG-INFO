@@ -8,5 +8,6 @@ Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.7
+License-File: LICENSE
 Requires-Dist: tiktoken>=0.1
 Requires-Dist: jsonschema>=4.0
