@@ -1,3 +1,26 @@
 [build-system]
-requires = ["setuptools>=64", "wheel"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "memoravel"
+version = "0.1.0"
+description = "A library to manage message history, for implementing memory in Language Models."
+authors = [{name = "Pena", email = "penadoxo@gmail.com"}]
+readme = "README.md"
+readme-content-type = "text/markdown"
+license = {text = "MIT"}
+keywords = ["LLM", "memory", "message", "history"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "tiktoken>=0.1",
+    "jsonschema>=4.0"
+]
+requires-python = ">=3.7"
+
+[tool.setuptools.packages.find]
+where = ["memoravel"]
