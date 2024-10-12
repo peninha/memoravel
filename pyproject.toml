@@ -8,7 +8,6 @@ version = "0.1.0"
 description = "A library to manage message history, for implementing memory in Language Models."
 authors = [{name = "Pena", email = "penadoxo@gmail.com"}]
 readme = "README.md"
-readme-content-type = "text/markdown"
 license = {text = "MIT"}
 keywords = ["LLM", "memory", "message", "history"]
 classifiers = [
