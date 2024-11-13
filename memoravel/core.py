@@ -17,13 +17,23 @@ class Memoravel:
         self.history = []
         self.encoder = tiktoken.get_encoding("cl100k_base")
 
-    def add_memory(self, role, content):
-        if isinstance(content, (dict, list)):
-            content_serialized = json.dumps(content)
-        else:
-            content_serialized = content
-        self.history.append({"role": role, "content": content_serialized})
-        self._trim_history()
+    def add(self, role, content=None, **kwargs):
+        # Construindo a estrutura da mensagem
+        message = {"role": role}
+        
+        # Adicionando conteúdo se disponível
+        if content is not None:
+            if isinstance(content, (dict, list)):
+                message["content"] = json.dumps(content)
+            else:
+                message["content"] = content
+        
+        # Adicionando campos adicionais, como tool_calls ou tool_call_id
+        for key, value in kwargs.items():
+            message[key] = value
+        
+        self.history.append(message)
+        #self._trim_history()
 
     def _trim_history(self):
         total_tokens = self._count_tokens()
@@ -59,17 +69,49 @@ class Memoravel:
 
     def _count_tokens(self):
         try:
-            return sum(len(self.encoder.encode(msg["content"])) for msg in self.history)
+            return sum(len(self.encoder.encode(json.dumps(msg))) for msg in self.history)
         except Exception as e:
             print(f"Erro ao contar tokens: {e}")
             return 0  # Retorna zero ou algum valor padrão em caso de erro
 
-    def get_history(self):
+    def recall(self):
+        return self.history
+    
+    """
         history_deserialized = []
         for msg in self.history:
-            try:
-                content = json.loads(msg["content"])
-            except json.JSONDecodeError:
-                content = msg["content"]
-            history_deserialized.append({"role": msg["role"], "content": content})
+            deserialized_msg = {"role": msg["role"]}
+            # Tenta desserializar o conteúdo, se for JSON
+            if "content" in msg:
+                # Atribui o conteúdo diretamente, sem tentar desserializar
+                deserialized_msg["content"] = msg["content"]
+            
+            # Inclui quaisquer outros campos adicionais
+            for key in msg:
+                if key not in ["role", "content"]:
+                    deserialized_msg[key] = msg[key]
+            
+            history_deserialized.append(deserialized_msg)
         return history_deserialized
+    """
+
+if __name__ == "__main__":
+    # Exemplo de uso da classe atualizada
+    memoria = Memoravel()
+    memoria.add("assistant", "Hello, how can I assist you today?")
+    memoria.add("assistant", tool_calls=[{
+        "id": "call_62136354",
+        "type": "function",
+        "function": {
+            "arguments": "{'order_id': 'order_12345'}",
+            "name": "get_delivery_date"
+        }
+    }])
+    memoria.add("tool", json.dumps({
+        "order_id": "order_12345",
+        "delivery_date": "2024-11-15 10:00:00"
+    }), tool_call_id="call_62136354")
+
+    # Recupera o histórico completo
+    hist = memoria.recall()
+    print(json.dumps(hist, indent=2))
