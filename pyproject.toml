@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "memoravel"
-version = "0.1.1"
+version = "0.1.2"
 description = "A library to manage message history, for implementing memory in Language Models."
 authors = [{name = "Pena", email = "penadoxo@gmail.com"}]
 readme = "README.md"
