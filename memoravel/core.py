@@ -2,12 +2,13 @@ import tiktoken
 import json
 
 class Memoravel:
-    def __init__(self, limit=10, max_tokens=8000, preserve_initial_memories=0, preserve_system_memories=True, preserve_last_memories=1):
+    def __init__(self, limit=10, max_tokens=8000, preserve_initial_memories=0, preserve_system_memories=True, preserve_last_memories=1, model="gpt-4o"):
         # Validações lógicas para evitar configurações inválidas
         if preserve_initial_memories > limit > 0:
             raise ValueError("O número de 'preserve_initial_memories' não pode ser maior que 'limit'.")
         if preserve_last_memories > limit > 0:
             raise ValueError("O número de 'preserve_last_memories' não pode ser maior que 'limit'.")
+        
         
         self.limit = limit
         self.max_tokens = max_tokens
@@ -15,7 +16,7 @@ class Memoravel:
         self.preserve_system_memories = preserve_system_memories
         self.preserve_last_memories = preserve_last_memories
         self.history = []
-        self.encoder = tiktoken.get_encoding("cl100k_base")
+        self.encoder = tiktoken.encoding_for_model(model)
 
     def add(self, role, content=None, **kwargs):
         # Construindo a estrutura da mensagem
