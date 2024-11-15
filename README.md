@@ -6,5 +6,4 @@ Uma biblioteca para gerenciar histórico de mensagens, para implementar memória
 
 ## Instalação
 
-```bash
-pip install -e .
+pip install git+https://github.com/peninha/memoravel.git#egg=memoravel --break-system-packages
