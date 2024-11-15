@@ -33,7 +33,7 @@ class Memoravel:
             message[key] = value
         
         self.history.append(message)
-        #self._trim_history()
+        self._trim_history()
 
     def _trim_history(self):
         total_tokens = self._count_tokens()
@@ -77,23 +77,21 @@ class Memoravel:
     def recall(self):
         return self.history
     
-    """
-        history_deserialized = []
-        for msg in self.history:
-            deserialized_msg = {"role": msg["role"]}
-            # Tenta desserializar o conteúdo, se for JSON
-            if "content" in msg:
-                # Atribui o conteúdo diretamente, sem tentar desserializar
-                deserialized_msg["content"] = msg["content"]
-            
-            # Inclui quaisquer outros campos adicionais
-            for key in msg:
-                if key not in ["role", "content"]:
-                    deserialized_msg[key] = msg[key]
-            
-            history_deserialized.append(deserialized_msg)
-        return history_deserialized
-    """
+    def save(self, file_path):
+       """Salva o conteúdo da memória em um arquivo JSON."""
+       try:
+           with open(file_path, 'w', encoding='utf-8') as file:
+               json.dump(self.history, file, ensure_ascii=False, indent=2)
+       except Exception as e:
+           print(f"Erro ao salvar o arquivo: {e}")
+
+    def load(self, file_path):
+       """Carrega o conteúdo da memória de um arquivo JSON."""
+       try:
+           with open(file_path, 'r', encoding='utf-8') as file:
+               self.history = json.load(file)
+       except Exception as e:
+           print(f"Erro ao carregar o arquivo: {e}")
 
 if __name__ == "__main__":
     # Exemplo de uso da classe atualizada
