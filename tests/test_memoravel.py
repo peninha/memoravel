@@ -245,6 +245,135 @@ class TestMemoravel(unittest.TestCase):
         self.assertEqual(history[0]["content"], "Message 1")
         self.assertEqual(history[1]["role"], "user")
         self.assertEqual(history[1]["content"], "Message 2")
+        
+    def test_recall_last_n(self):
+        memoravel = Memoravel(limit=10)
+        memoravel.add("system", "Mensagem 1")
+        memoravel.add("user", "Mensagem 2")
+        memoravel.add("system", "Mensagem 3")
+        memoravel.add("user", "Mensagem 4")
+        memoravel.add("system", "Mensagem 5")
+        memoravel.add("user", "Mensagem 6")
+        memoravel.add("user", "Mensagem 7")
+        memoravel.add("system", "Mensagem 8")
+        
+        history = memoravel.recall(last_n=3)
+
+        self.assertEqual(len(history), 3)
+        self.assertEqual(history[0]["role"], "user")
+        self.assertEqual(history[0]["content"], "Mensagem 6")
+        self.assertEqual(history[1]["role"], "user")
+        self.assertEqual(history[1]["content"], "Mensagem 7")
+        self.assertEqual(history[2]["role"], "system")
+        self.assertEqual(history[2]["content"], "Mensagem 8")
+
+    def test_recall_first_n(self):
+        memoravel = Memoravel(limit=10)
+        memoravel.add("system", "Mensagem 1")
+        memoravel.add("user", "Mensagem 2")
+        memoravel.add("system", "Mensagem 3")
+        memoravel.add("user", "Mensagem 4")
+        memoravel.add("system", "Mensagem 5")
+        memoravel.add("user", "Mensagem 6")
+        memoravel.add("user", "Mensagem 7")
+        memoravel.add("system", "Mensagem 8")
+        
+        history = memoravel.recall(first_n=3)
+
+        self.assertEqual(len(history), 3)
+        self.assertEqual(history[0]["role"], "system")
+        self.assertEqual(history[0]["content"], "Mensagem 1")
+        self.assertEqual(history[1]["role"], "user")
+        self.assertEqual(history[1]["content"], "Mensagem 2")
+        self.assertEqual(history[2]["role"], "system")
+        self.assertEqual(history[2]["content"], "Mensagem 3")
+
+    def test_recall_first_and_last(self):
+        memoravel = Memoravel(limit=10)
+        memoravel.add("system", "Message 1")
+        memoravel.add("user", "Message 2")
+        memoravel.add("system", "Message 3")
+        memoravel.add("user", "Message 4")
+        memoravel.add("system", "Message 5")
+        memoravel.add("user", "Message 6")
+        memoravel.add("user", "Message 7")
+        memoravel.add("system", "Message 8")
+        
+        with self.assertRaises(ValueError) as context:
+            memoravel.recall(first_n=2, last_n=3)
+        self.assertEqual(str(context.exception), "Only one of the parameters 'last_n', 'first_n', or 'slice_range' can be used at a time.")
+
+    def test_recall_slice(self):
+        memoravel = Memoravel(limit=10)
+        memoravel.add("system", "Mensagem 1")
+        memoravel.add("user", "Mensagem 2")
+        memoravel.add("system", "Mensagem 3")
+        memoravel.add("user", "Mensagem 4")
+        memoravel.add("system", "Mensagem 5")
+        memoravel.add("user", "Mensagem 6")
+        memoravel.add("user", "Mensagem 7")
+        memoravel.add("system", "Mensagem 8")
+        
+        history = memoravel.recall(slice_range = slice(3, 5, 1))
+
+        self.assertEqual(len(history), 2)
+        self.assertEqual(history[0]["role"], "user")
+        self.assertEqual(history[0]["content"], "Mensagem 4")
+        self.assertEqual(history[1]["role"], "system")
+        self.assertEqual(history[1]["content"], "Mensagem 5")
+    
+    def test_recall_slice_negative(self):
+        memoravel = Memoravel(limit=10)
+        memoravel.add("system", "Mensagem 1")
+        memoravel.add("user", "Mensagem 2")
+        memoravel.add("system", "Mensagem 3")
+        memoravel.add("user", "Mensagem 4")
+        memoravel.add("system", "Mensagem 5")
+        memoravel.add("user", "Mensagem 6")
+        memoravel.add("user", "Mensagem 7")
+        memoravel.add("system", "Mensagem 8")
+        
+        history = memoravel.recall(slice_range = slice(-5, -3, 1))
+
+        self.assertEqual(len(history), 2)
+        self.assertEqual(history[0]["role"], "user")
+        self.assertEqual(history[0]["content"], "Mensagem 4")
+        self.assertEqual(history[1]["role"], "system")
+        self.assertEqual(history[1]["content"], "Mensagem 5")
+    
+    def test_recall_invert_list(self):
+        memoravel = Memoravel(limit=10)
+        memoravel.add("system", "Mensagem 1")
+        memoravel.add("user", "Mensagem 2")
+        memoravel.add("system", "Mensagem 3")
+        memoravel.add("user", "Mensagem 4")
+        memoravel.add("system", "Mensagem 5")
+        memoravel.add("user", "Mensagem 6")
+        memoravel.add("user", "Mensagem 7")
+        memoravel.add("system", "Mensagem 8")
+        
+        history = memoravel.recall(slice_range = slice(-1, -3, -1))
+
+        self.assertEqual(len(history), 2)
+        self.assertEqual(history[0]["role"], "system")
+        self.assertEqual(history[0]["content"], "Mensagem 8")
+        self.assertEqual(history[1]["role"], "user")
+        self.assertEqual(history[1]["content"], "Mensagem 7")
+
+    def test_recall_slice_out_of_bounds(self):
+        memoravel = Memoravel(limit=10)
+        memoravel.add("system", "Mensagem 1")
+        memoravel.add("user", "Mensagem 2")
+        memoravel.add("system", "Mensagem 3")
+        memoravel.add("user", "Mensagem 4")
+        memoravel.add("system", "Mensagem 5")
+        memoravel.add("user", "Mensagem 6")
+        memoravel.add("user", "Mensagem 7")
+        memoravel.add("system", "Mensagem 8")
+        
+        history = memoravel.recall(slice_range = slice(12, 15, 1))
+    
+        self.assertEqual(len(history), 0)
 
 if __name__ == "__main__":
     unittest.main()
