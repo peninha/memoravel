@@ -1,6 +1,9 @@
 import tiktoken
 import json
 
+# NOTE: This class currently only works with the OpenAI API format.
+# TODO: Implement compatibility with other model APIs.
+
 class Memoravel:
     def __init__(self, limit=10, max_tokens=8000, preserve_initial_memories=0, preserve_system_memories=True, preserve_last_memories=1, model="gpt-4o"):
         # Logical validations to avoid invalid configurations
@@ -18,6 +21,13 @@ class Memoravel:
         self.encoder = tiktoken.encoding_for_model(model)
 
     def add(self, role, content=None, **kwargs):
+        """
+        Adds a new message to the history and trims the history if necessary.
+        
+        :param role: The role of the message (e.g., 'user', 'assistant', 'system').
+        :param content: The content of the message, can be a string, dict, or list.
+        :param kwargs: Additional fields that should be added to the message.
+        """
         # Building the message structure
         message = {"role": role}
         
@@ -33,10 +43,13 @@ class Memoravel:
             message[key] = value
         
         self.history.append(message)
-        self._trim_history()
+        self.trim_history()  # Trim the history after adding a new message
 
-    def _trim_history(self):
-        total_tokens = self._count_tokens()
+    def trim_history(self):
+        """
+        Trims the history to meet the constraints of max tokens and message limit.
+        """
+        total_tokens = self.count_tokens()
 
         # Index from which we can remove messages
         removable_start_index = self.preserve_initial_memories
@@ -48,7 +61,7 @@ class Memoravel:
         while (
             (self.max_tokens > 0 and total_tokens > self.max_tokens) or
             (self.limit > 0 and len(self.history) > self.limit)
-        ) and self._has_removable_memory(removable_start_index, removable_end_index):
+        ) and self.has_removable_memory(removable_start_index, removable_end_index):
             # Find the index of the first removable message
             for i in range(removable_start_index, removable_end_index):
                 # If preserve_system_memories is active, skip system messages
@@ -57,17 +70,28 @@ class Memoravel:
                 # Remove the first removable message
                 self.history.pop(i)
                 break
-            total_tokens = self._count_tokens()
+            total_tokens = self.count_tokens()
             removable_end_index = len(self.history) - self.preserve_last_memories
 
-    def _has_removable_memory(self, start_index, end_index):
-        """Checks if there are removable messages between a start and end index."""
+    def has_removable_memory(self, start_index, end_index):
+        """
+        Checks if there are removable messages between a start and end index.
+        
+        :param start_index: The start index for checking removable messages.
+        :param end_index: The end index for checking removable messages.
+        :return: True if there are removable messages, False otherwise.
+        """
         return any(
             (msg["role"] != "system" or not self.preserve_system_memories)
             for msg in self.history[start_index:end_index]
         )
 
-    def _count_tokens(self):
+    def count_tokens(self):
+        """
+        Counts the total number of tokens in the current history.
+        
+        :return: The total token count.
+        """
         try:
             return sum(len(self.encoder.encode(json.dumps(msg))) for msg in self.history)
         except Exception as e:
@@ -78,9 +102,9 @@ class Memoravel:
         """
         Returns the last 'last_n' memories, the first 'first_n' memories, or a specific range of the history using slice.
         
-        :param last_n: number of last memories to be retrieved.
-        :param first_n: number of first memories to be retrieved.
-        :param slice_range: a slice object to define the range (start, stop, step).
+        :param last_n: Number of last memories to be retrieved.
+        :param first_n: Number of first memories to be retrieved.
+        :param slice_range: A slice object to define the range (start, stop, step).
         :return: A list of retrieved memories.
         """
         if sum(param is not None for param in [last_n, first_n, slice_range]) > 1:
@@ -114,3 +138,5 @@ class Memoravel:
                self.history = json.load(file)
        except Exception as e:
            print(f"Error loading file: {e}")
+
+
