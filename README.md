@@ -2,8 +2,6 @@
 
 A Python library to manage message history, for implementing memory in Language Models.
 
-[![Documentation Status](https://readthedocs.org/projects/memoravel/badge/?version=latest)](https://memoravel.readthedocs.io/en/latest/?badge=latest)
-
 [portuguese] Uma biblioteca para gerenciar histórico de mensagens, para implementar memória nos Modelos de Linguagem.
 
 ## Features
@@ -17,7 +15,7 @@ A Python library to manage message history, for implementing memory in Language 
 To install memoravel, you can use pip:
 
 ```sh
-pip install git+https://github.com/peninha/memoravel.git#egg=memoravel
+pip install memoravel
 ```
 
 ## Quick Start
@@ -30,7 +28,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 # Initialize OpenAI client
-load_dotenv() #make sure you have a .env file with yout API token in it: OPENAI_API_KEY="..."
+load_dotenv()
 client = OpenAI()
 
 model = "gpt-4o"
@@ -132,7 +130,7 @@ You can find more comprehensive examples in the [`examples/`](examples/) directo
 
 ## Documentation
 
-Full documentation for all methods and classes can be found at the [official documentation site](https://memoravel.readthedocs.io/en/latest/memoravel.html#memoravel.Memoravel). You can also refer to the docstrings in the code for quick explanations.
+Full documentation for all methods and classes can be found at the [official documentation site](#) (placeholder link for now). You can also refer to the docstrings in the code for quick explanations.
 
 ## Contributing
 
