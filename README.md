@@ -103,13 +103,31 @@ total_tokens = memory.count_tokens()
 print(f"\nTokens in memory:\n{total_tokens}")
 ```
 
-
-
-This example demonstrates basic usage, including adding messages and recalling them, as well as automatically trimming the history when necessary.
-
 ## Usage
 
-`memoravel` can be used in a variety of ways to maintain conversational context for language models. Below are some of the key methods available:
+`memoravel` can be used in various ways to maintain conversational context for language models. Below are the main steps and methods available to use the library:
+
+### Initializing Memory
+
+First you need to initialize a memory object:
+
+```python
+from memoravel import Memoravel
+memory = Memoravel(limit=10,
+                   max_tokens=8000, 
+                   preserve_initial_memories=2,
+                   preserve_system_memories=True,
+                   preserve_last_memories=1,
+                   model="gpt-4")
+```
+
+- **Initialization Parameters**:
+  - `limit` (int, optional): The maximum number of messages to be kept in memory. Default is `10`. If set to `0`, there is no limit.
+  - `max_tokens` (int, optional): The maximum number of tokens allowed in the history. Default is `8000`.
+  - `preserve_initial_memories` (int, optional): Number of initial messages that should not be removed during trimming. Useful for preserving system prompts or important initial instructions. Default is `0`.
+  - `preserve_system_memories` (bool, optional): If `True`, system messages (`role="system"`) will be preserved during trimming operations. Default is `True`
+  - `preserve_last_memories` (int, optional): Number of recent messages that should be preserved when trimming the history. Default is 1.
+  - `model` (str, optional): The model name for which the history is being configured, usually the name of an OpenAI model (e.g., "gpt-4").
 
 ### `add(role, content=None, **kwargs)`
 
