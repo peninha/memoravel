@@ -7,7 +7,14 @@ import json
 class Memoravel:
     def __init__(self, limit=10, max_tokens=8000, preserve_initial_memories=0, preserve_system_memories=True, preserve_last_memories=1, model="gpt-4o"):
         """
-        Initializes a new instance of the Memoravel class.
+        A class to manage conversation memory for Language Models, maintaining message history
+        and managing tokens to simulate persistent memory.
+    
+        NOTE:
+            This class currently only works with the OpenAI API format.
+        
+        .. todo::
+            Implement compatibility with other model APIs.
 
         Args:
             limit (int, optional): The maximum number of messages allowed in the history. Default is 10. Set to 0 for unlimited.
