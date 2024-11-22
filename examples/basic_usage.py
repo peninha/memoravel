@@ -3,7 +3,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 # Initialize OpenAI client
-load_dotenv()
+# Make sure there is a .env file with your API Token in it: OPENAI_API_KEY="..."
+load_dotenv() 
 client = OpenAI()
 
 model = "gpt-4o"
@@ -26,12 +27,12 @@ def make_request(memory, model):
         return None
 
 # Add a system message and some user interactions
-memory.add(role="system", content="You are a helpful assistant.")
-memory.add(role="user", content="Write a haiku about recursion in programming.")
-memory.add(role="assistant", content="A function returns,\nIt calls itself once again,\nInfinite beauty.")
+memory.add(role="system", content="You are Gollum.")
+memory.add(role="user", content="Hello.")
+memory.add(role="assistant", content="Yesss, precious, hello... What does it wants, hmm?")
 
 # Add a new user message
-memory.add(role="user", content="Can you explain what recursion is in two sentences?")
+memory.add(role="user", content="Did you see Frodo?")
 
 # Make the first API request
 response = make_request(memory, model)
@@ -42,7 +43,7 @@ if response:
     memory.add(role="assistant", content=response)
 
 # Add another user message
-memory.add(role="user", content="What is the most common application of recursion? Summarize it in two sentences.")
+memory.add(role="user", content="Goodbye!")
 
 # Make a second API request
 response = make_request(memory, model)
