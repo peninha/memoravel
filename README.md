@@ -1,6 +1,6 @@
 # memoravel
 
-"A Python library designed to manage and manipulate conversational history, enabling persistent memory capabilities in Language Models.
+A Python library designed to manage and manipulate conversational history, enabling persistent memory capabilities in Language Models.
 
 [![Documentation Status](https://readthedocs.org/projects/memoravel/badge/?version=latest)](https://memoravel.readthedocs.io/en/latest/?badge=latest)
 
