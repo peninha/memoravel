@@ -21,10 +21,10 @@ class Memoravel:
         Args:
             limit (int, optional): The maximum number of messages allowed in the history. Default is 10. Set to 0 for unlimited.
             max_tokens (int, optional): The maximum number of tokens allowed in the history. Default is 8000.
-            preserve_initial_memories (int, optional): Number of initial memories to preserve. These messages will not be removed during trimming.
+            preserve_initial_memories (int, optional): Number of initial memories to preserve. These messages will not be removed during trimming. Default is 0.
             preserve_system_memories (bool, optional): If True, system messages will be preserved during trimming. Default is True.
             preserve_last_memories (int, optional): Number of recent messages to preserve during trimming. Default is 1.
-            model (str, optional): The model for which the encoding will be used, typically the OpenAI model name. Default is "gpt-4o".
+            model (str, optional): The model for which the encoding will be used, for token counting purposes. Default is "gpt-4o".
         
         Example:
             .. code-block:: python

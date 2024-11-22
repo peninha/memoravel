@@ -122,12 +122,12 @@ memory = Memoravel(limit=10,
 ```
 
 - **Initialization Parameters**:
-  - `limit` (int, optional): The maximum number of messages to be kept in memory. Default is `10`. If set to `0`, there is no limit.
+  - `limit` (int, optional): The maximum number of messages allowed in the history. Default is 10. Set to `0` for unlimited.
   - `max_tokens` (int, optional): The maximum number of tokens allowed in the history. Default is `8000`.
-  - `preserve_initial_memories` (int, optional): Number of initial messages that should not be removed during trimming. Useful for preserving system prompts or important initial instructions. Default is `0`.
-  - `preserve_system_memories` (bool, optional): If `True`, system messages (`role="system"`) will be preserved during trimming operations. Default is `True`
-  - `preserve_last_memories` (int, optional): Number of recent messages that should be preserved when trimming the history. Default is 1.
-  - `model` (str, optional): The model name for which the history is being configured, usually the name of an OpenAI model (e.g., "gpt-4").
+  - `preserve_initial_memories` (int, optional): Number of initial memories to preserve. These messages will not be removed during trimming. Default is `0`.
+  - `preserve_system_memories` (bool, optional): If True, system messages will be preserved during trimming. Default is `True`.
+  - `preserve_last_memories` (int, optional): Number of recent messages to preserve during trimming. Default is `1`.
+  - `model` (str, optional): The model for which the encoding will be used, for token counting purposes. Default is `"gpt-4o"`.
 
 ### `add(role, content=None, **kwargs)`
 
