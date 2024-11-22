@@ -1,8 +1,8 @@
 # memoravel
 
-A Python library to manage message history, for implementing memory in Language Models.
+"A Python library designed to manage and manipulate conversational history, enabling persistent memory capabilities in Language Models.
 
-[portuguese] Uma biblioteca para gerenciar histórico de mensagens, para implementar memória nos Modelos de Linguagem.
+[portuguese] Uma biblioteca Python projetada para gerenciar e manipular o histórico de conversas, habilitando capacidades de memória persistente em Modelos de Linguagem.
 
 ## Features
 
