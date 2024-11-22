@@ -3,6 +3,8 @@ import json
 
 # NOTE: This class currently only works with the OpenAI API format.
 # TODO: Implement compatibility with other model APIs.
+# TODO: Melhorar o exemplo do Quick Start
+# TODO: Fazer exemplos para a pasta examples
 
 class Memoravel:
     def __init__(self, limit=10, max_tokens=8000, preserve_initial_memories=0, preserve_system_memories=True, preserve_last_memories=1, model="gpt-4o"):
