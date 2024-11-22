@@ -2,6 +2,8 @@
 
 A Python library to manage message history, for implementing memory in Language Models.
 
+[![Documentation Status](https://readthedocs.org/projects/memoravel/badge/?version=latest)](https://memoravel.readthedocs.io/en/latest/?badge=latest)
+
 [portuguese] Uma biblioteca para gerenciar histórico de mensagens, para implementar memória nos Modelos de Linguagem.
 
 ## Features
