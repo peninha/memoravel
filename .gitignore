@@ -1,2 +1,22 @@
+# Ignore build directory
+build/
+
+# Ignore egg-info directory
+memoravel.egg-info/
+
+# Ignore Python cache files
 __pycache__/
-*.egg-info/
+*.pyc
+
+# Ignore Sphinx directories and temporary files
+source/_static/
+source/_templates/
+source/_build/
+
+# Ignore arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Ambiente virtual
+venv/
+.env

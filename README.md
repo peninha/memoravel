@@ -28,7 +28,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 # Initialize OpenAI client
-load_dotenv()
+load_dotenv() #make sure you have a .env file with yout API token in it: OPENAI_API_KEY="..."
 client = OpenAI()
 
 model = "gpt-4o"

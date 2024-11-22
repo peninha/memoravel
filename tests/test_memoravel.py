@@ -292,6 +292,22 @@ class TestMemoravel(unittest.TestCase):
             memory.recall(first_n=2, last_n=3)
         self.assertEqual(str(context.exception), "Only one of the parameters 'last_n', 'first_n', or 'slice_range' can be used at a time.")
 
+    def test_recall_index(self):
+        memory = Memoravel(limit=10)
+        memory.add("system", "Mensagem 1")
+        memory.add("user", "Mensagem 2")
+        memory.add("system", "Mensagem 3")
+        memory.add("user", "Mensagem 4")
+        memory.add("system", "Mensagem 5")
+        memory.add("user", "Mensagem 6")
+        memory.add("user", "Mensagem 7")
+        memory.add("system", "Mensagem 8")
+        
+        history = memory.recall(index_or_slice = 2)
+    
+        self.assertEqual(len(history), 1)
+        self.assertEqual(history[0]["content"], "Mensagem 3")
+
     def test_recall_slice(self):
         memory = Memoravel(limit=10)
         memory.add("system", "Mensagem 1")
@@ -303,7 +319,7 @@ class TestMemoravel(unittest.TestCase):
         memory.add("user", "Mensagem 7")
         memory.add("system", "Mensagem 8")
         
-        history = memory.recall(slice_range = slice(3, 5, 1))
+        history = memory.recall(index_or_slice = slice(3, 5, 1))
 
         self.assertEqual(len(history), 2)
         self.assertEqual(history[0]["content"], "Mensagem 4")
@@ -320,7 +336,7 @@ class TestMemoravel(unittest.TestCase):
         memory.add("user", "Mensagem 7")
         memory.add("system", "Mensagem 8")
         
-        history = memory.recall(slice_range = slice(-5, -3, 1))
+        history = memory.recall(index_or_slice = slice(-5, -3, 1))
 
         self.assertEqual(len(history), 2)
         self.assertEqual(history[0]["content"], "Mensagem 4")
@@ -337,7 +353,7 @@ class TestMemoravel(unittest.TestCase):
         memory.add("user", "Mensagem 7")
         memory.add("system", "Mensagem 8")
         
-        history = memory.recall(slice_range = slice(-1, -3, -1))
+        history = memory.recall(index_or_slice = slice(-1, -3, -1))
 
         self.assertEqual(len(history), 2)
         self.assertEqual(history[0]["content"], "Mensagem 8")
@@ -354,9 +370,84 @@ class TestMemoravel(unittest.TestCase):
         memory.add("user", "Mensagem 7")
         memory.add("system", "Mensagem 8")
         
-        history = memory.recall(slice_range = slice(12, 15, 1))
+        history = memory.recall(index_or_slice = slice(12, 15, 1))
     
         self.assertEqual(len(history), 0)
+    
+    def test_delete(self):
+        memory = Memoravel(limit=10)
+        memory.add("system", "Mensagem 1")
+        memory.add("user", "Mensagem 2")
+        memory.add("system", "Mensagem 3")
+        memory.add("user", "Mensagem 4")
+        memory.add("system", "Mensagem 5")
+        memory.add("user", "Mensagem 6")
+        memory.add("user", "Mensagem 7")
+        memory.add("system", "Mensagem 8")
+        
+        memory.delete(2)
+        memory.delete(slice(3, 5))
+        
+        history = memory.recall()
+    
+        self.assertEqual(len(history), 5)
+        self.assertEqual(history[0]["content"], "Mensagem 1")
+        self.assertEqual(history[1]["content"], "Mensagem 2")
+        self.assertEqual(history[2]["content"], "Mensagem 4")
+        self.assertEqual(history[3]["content"], "Mensagem 7")
+        self.assertEqual(history[4]["content"], "Mensagem 8")
+    
+    def test_delete_slice_negative(self):
+        memory = Memoravel(limit=10)
+        memory.add("system", "Mensagem 1")
+        memory.add("user", "Mensagem 2")
+        memory.add("system", "Mensagem 3")
+        memory.add("user", "Mensagem 4")
+        memory.add("system", "Mensagem 5")
+        memory.add("user", "Mensagem 6")
+        
+        memory.delete(slice(-3, -5, -1))
+        
+        history = memory.recall()
+    
+        self.assertEqual(len(history), 4)
+        self.assertEqual(history[0]["content"], "Mensagem 1")
+        self.assertEqual(history[1]["content"], "Mensagem 2")
+        self.assertEqual(history[2]["content"], "Mensagem 5")
+        self.assertEqual(history[3]["content"], "Mensagem 6")
+    
+    def test_insert(self):
+        memory = Memoravel(limit=10)
+        memory.add("system", "Mensagem 1")
+        memory.add("system", "Mensagem 3")
+        memory.add("user", "Mensagem 4")
+        memory.add("system", "Mensagem 5")
+        memory.add("user", "Mensagem 6")
+        memory.add("user", "Mensagem 7")
+        memory.add("system", "Mensagem 8")
+        
+        memory.insert(1, {"role": "user", "content": "Mensagem 2"})
+        
+        history = memory.recall()
+    
+        self.assertEqual(history[1]["content"], "Mensagem 2")
+    
+    def test_insert_list(self):
+        memory = Memoravel(limit=10)
+        memory.add("system", "Mensagem 1")
+        memory.add("user", "Mensagem 4")
+        memory.add("system", "Mensagem 5")
+        memory.add("user", "Mensagem 6")
+        memory.add("user", "Mensagem 7")
+        memory.add("system", "Mensagem 8")
+        
+        memory.insert(1, [{"role": "user", "content": "Mensagem 2"},
+                          {"role": "user", "content": "Mensagem 3"}])
+        
+        history = memory.recall()
+    
+        self.assertEqual(history[1]["content"], "Mensagem 2")
+        self.assertEqual(history[2]["content"], "Mensagem 3")
 
 if __name__ == "__main__":
     unittest.main()
