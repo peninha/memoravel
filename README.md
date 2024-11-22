@@ -140,7 +140,7 @@ You can find more comprehensive examples in the [`examples/`](examples/) directo
 
 ## Documentation
 
-Full documentation for all methods and classes can be found at the [official documentation site](#) (placeholder link for now). You can also refer to the docstrings in the code for quick explanations.
+Full documentation for all methods and classes can be found at the [official documentation site](#) (https://memoravel.readthedocs.io/en/latest/memoravel.html). You can also refer to the docstrings in the code for quick explanations.
 
 ## Contributing
 
