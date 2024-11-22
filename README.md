@@ -107,7 +107,7 @@ print(f"\nTokens in memory:\n{total_tokens}")
 
 `memoravel` can be used in various ways to maintain conversational context for language models. Below are the main steps and methods available to use the library:
 
-### Initializing Memory
+### `Initializing Memory`
 
 First you need to initialize a memory object:
 
