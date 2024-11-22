@@ -6,9 +6,19 @@ A Python library to manage message history, for implementing memory in Language 
 
 ## Features
 
-- **Message History Management**: Store and manage message history to simulate memory in LLMs.
-- **Token Counting**: Manage the number of tokens effectively to keep conversation context under a desired limit.
-- **Flexible Memory Preservation**: Allows preserving initial or last messages, including system messages, ensuring critical information remains.
+- **Advanced Message History Management**: Easily store, retrieve, and manage conversational history, enabling your Language Model to simulate memory and maintain context across multiple interactions.
+
+- **Adaptive Token Counting and Management**: Automatically tracks the number of tokens in the message history, ensuring that conversations stay within the token limit of the language model.
+
+- **Customizable Trimming Rules**: Define detailed trimming rules to manage which messages should be retained and which can be discarded as new messages are added. Set rules such as preserving system prompts, the initial prompts or keeping recent exchanges, allowing you to maintain a balance between keeping the most relevant context and staying within token limits.
+
+- **Granular Memory Editing**: Insert or delete specific messages at any position in the memory. This feature allows for precise control over the conversation history, enabling you to modify, expand, or refine the context as needed, without affecting the overall flow of the memory.
+
+- **Selective Recall of Messages**: Retrieve messages flexibly using various criteria: request the last `n` messages, the first `n` messages, or a specific range using Python-style slicing. This makes it easy to programmatically adjust the context you provide to the language model based on the current need.
+
+- **Persistent Memory Capabilities**: Save and load memory to and from disk in JSON format, allowing for persistent conversation states across different sessions. This is particularly useful for long-running applications, where the conversation context needs to be preserved between interactions.
+
+- **Easy Extensibility**: Built with flexibility in mind, making it easy to adapt for other language models, future extensions, or use as a memory manager for other modules.
 
 ## Installation
 
